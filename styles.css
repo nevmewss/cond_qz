@@ -1161,20 +1161,22 @@ a {
     }
 
     .hero__visual {
-        min-height: 560px;
+        width: min(100%, 380px);
+        min-height: 500px;
+        margin: 0 auto;
     }
 
     .hero__stats {
         position: static;
         transform: none;
-        width: 100%;
-        margin-top: 16px;
+        width: min(100%, 300px);
+        margin: 16px auto 0;
     }
 
     .hero__floating {
         position: static;
-        max-width: 100%;
-        margin-top: 16px;
+        max-width: 300px;
+        margin: 16px auto 0;
     }
 
     .quiz-options--cards,
@@ -1204,6 +1206,21 @@ a {
     .quiz-form > p:not(.quiz-question__eyebrow),
     .page-footer p {
         font-size: 0.97rem;
+    }
+
+    .hero__stage {
+        gap: 16px;
+    }
+
+    .hero__visual {
+        width: min(100%, 290px);
+        min-height: 400px;
+    }
+
+    .hero__stats,
+    .hero__floating {
+        width: min(100%, 264px);
+        max-width: 264px;
     }
 
     .quiz-progress,
