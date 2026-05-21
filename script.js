@@ -88,6 +88,7 @@ const closeModalButtons = document.querySelectorAll("[data-close-modal]");
 let currentStep = 0;
 let answers = createInitialAnswers();
 let isSubmitting = false;
+const phonePrefix = "+380";
 
 function createInitialAnswers() {
     return questions.map((question) => {
@@ -115,6 +116,67 @@ function formatRangeAnswer(value, unit) {
 function parseRangeAnswer(value, fallback) {
     const parsed = Number.parseInt(String(value).replace(/[^\d]/g, ""), 10);
     return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function normalizePhoneDigits(value) {
+    let digits = String(value).replace(/\D/g, "");
+
+    if (digits.startsWith("380")) {
+        digits = digits.slice(3);
+    } else if (digits.startsWith("0")) {
+        digits = digits.slice(1);
+    }
+
+    return digits.slice(0, 9);
+}
+
+function formatPhoneInput(value) {
+    const digits = normalizePhoneDigits(value);
+    const parts = [];
+
+    if (digits.slice(0, 2)) {
+        parts.push(digits.slice(0, 2));
+    }
+    if (digits.slice(2, 5)) {
+        parts.push(digits.slice(2, 5));
+    }
+    if (digits.slice(5, 7)) {
+        parts.push(digits.slice(5, 7));
+    }
+    if (digits.slice(7, 9)) {
+        parts.push(digits.slice(7, 9));
+    }
+
+    return `${phonePrefix}${parts.length ? ` ${parts.join(" ")}` : ""}`;
+}
+
+function attachPhoneMask(input) {
+    if (!(input instanceof HTMLInputElement)) {
+        return;
+    }
+
+    input.value = formatPhoneInput(input.value);
+
+    input.addEventListener("focus", () => {
+        if (!input.value.trim()) {
+            input.value = `${phonePrefix} `;
+        }
+
+        requestAnimationFrame(() => {
+            const end = input.value.length;
+            input.setSelectionRange(end, end);
+        });
+    });
+
+    input.addEventListener("input", () => {
+        input.value = formatPhoneInput(input.value);
+    });
+
+    input.addEventListener("blur", () => {
+        if (input.value.trim() === phonePrefix) {
+            input.value = "";
+        }
+    });
 }
 
 function hasAnswer(question, value) {
@@ -359,7 +421,7 @@ function renderForm() {
 
                     <div class="field">
                         <label for="phone">Телефон</label>
-                        <input id="phone" name="phone" type="tel" placeholder="+380 XX XXX XX XX" required />
+                        <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+380 XX XXX XX XX" required />
                     </div>
 
                     <div class="field field--wide">
@@ -386,8 +448,10 @@ function renderForm() {
 
     const leadForm = document.getElementById("leadForm");
     const formBackButton = document.getElementById("formBackButton");
+    const phoneInput = document.getElementById("phone");
 
     leadForm.addEventListener("submit", handleSubmit);
+    attachPhoneMask(phoneInput);
     formBackButton.addEventListener("click", () => {
         currentStep = questions.length - 1;
         render();
@@ -434,6 +498,10 @@ function render() {
 
 function validatePhone(value) {
     const digitsOnly = value.replace(/\D/g, "");
+    if (digitsOnly.startsWith("380")) {
+        return digitsOnly.length === 12;
+    }
+
     return digitsOnly.length >= 10;
 }
 

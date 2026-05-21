@@ -1309,21 +1309,21 @@ a {
         gap: 10px;
     }
 
-    .quiz-actions {
+    #quizContent {
         order: 2;
+        padding-top: 16px;
+    }
+
+    .quiz-actions {
+        order: 3;
         flex-direction: row;
         align-items: center;
         padding-top: 14px;
         padding-bottom: 16px;
         margin-top: 0;
-        border-top: 0;
-        border-bottom: 1px solid rgba(17, 83, 214, 0.08);
+        border-top: 1px solid rgba(17, 83, 214, 0.08);
+        border-bottom: 0;
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(249, 252, 255, 0.98) 100%);
-    }
-
-    #quizContent {
-        order: 3;
-        padding-top: 16px;
     }
 
     .quiz-question h3,
