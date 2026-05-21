@@ -71,7 +71,7 @@ const questions = [
         title: "Які необхідні терміни для виконання послуг?",
         description: "Підкажіть бажані строки, і ми зорієнтуємо по доступності монтажної бригади.",
         hint: "Останній крок перед контактною формою.",
-        visual: "assets/conditioners/room-ac.svg",
+        visual: "assets/conditioners/room-ac-real.jpg",
         options: [{ value: "Протягом двох днів" }, { value: "Протягом тижня" }, { value: "Протягом місяця" }, { value: "За домовленістю" }],
     },
 ];
